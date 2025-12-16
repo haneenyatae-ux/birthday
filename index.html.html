@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday Alaa 🐱🎂</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #fde2e4, #e0f4ff, #fff1c1);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .page {
+      display: none;
+      background: #ffffffcc;
+      backdrop-filter: blur(10px);
+      border-radius: 30px;
+      padding: 40px 30px;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      animation: fade 0.6s ease;
+    }
+    .page.active { display: block; }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-6px); }
+      100% { transform: translateX(0); }
+    }
+
+    .shake { animation: shake 0.4s; }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      color: #ff8fab;
+      font-size: 2.4rem;
+      margin-bottom: 10px;
+    }
+    h2 {
+      font-size: 1.2rem;
+      color: #6b7280;
+      margin-bottom: 20px;
+    }
+    p {
+      color: #4b5563;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+    .cat {
+      font-size: 5rem;
+      margin: 20px 0;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+      100% { transform: translateY(0); }
+    }
+    button {
+      background: linear-gradient(135deg, #ffb3c6, #a0e7e5);
+      border: none;
+      border-radius: 999px;
+      padding: 12px 26px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+    }
+    .dots { margin-top: 20px; text-align: center; }
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #fbcfe8;
+      margin: 0 4px;
+    }
+    .dot.active { background: #ff8fab; }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1 -->
+  <div class="page active" id="page1">
+    <h1>Hello Bestie</h1>
+    <h2>Before you continue… 🔐🐾</h2>
+    <div class="cat">🐱</div>
+    <p>
+      To unlock the next page, please enter your <strong>birthday date number</strong> 🎂
+      <br />(Hint: it’s a number 😉)
+    </p>
+
+    <input type="number" id="birthdayCode" placeholder="Enter number" style="
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 2px solid #fbcfe8;
+      outline: none;
+      font-size: 1rem;
+      text-align: center;
+      width: 160px;
+      margin-bottom: 15px;" />
+
+    <p id="error" style="color:#ef4444; font-size:0.85rem; display:none;">❌ Wrong number, try again!</p>
+
+    <button onclick="checkCode()">Unlock ➜</button>
+
+    <audio id="meowSound">
+      <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_2c3cfc9c6e.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="bgMusic" loop>
+      <source src="https://cdn.pixabay.com/audio/2022/10/26/audio_8b0d9b7a8c.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="page" id="page2">
+    <h1>Happy Birthday!</h1>
+    <h2>From your best friend Haneen 🎂</h2>
+    <div class="cat">🐱🎉</div>
+    <p>
+      May your birthday this year bring you lots of happiness.
+      May you always be surrounded by positive energy, and may success be waiting ahead of you.
+      Don’t give up even when you face hardships, always remember there are people who care about you.
+      Keep smiling.
+        <br><br>
+      Love you✨
+    </p>
+    <button onclick="nextPage(3)">Next ➜</button>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="page" id="page3">
+    <h1>One Last Thing…</h1>
+    <h2>Thank you for being my friend 💗</h2>
+    <div class="cat">🐱💖</div>
+    <p>
+      You are appreciated, loved, and cherished more than you know.
+      I hope you have the cutest birthday ever 🌸
+    </p>
+    <button onclick="nextPage(1)">Restart ♡</button>
+  </div>
+
+  <!-- DOTS -->
+  <div class="dots">
+    <span class="dot active" id="dot1"></span>
+    <span class="dot" id="dot2"></span>
+    <span class="dot" id="dot3"></span>
+  </div>
+
+  <script>
+    const correctCode = 17; // birthday date
+
+    function checkCode() {
+      const input = document.getElementById('birthdayCode').value;
+      const error = document.getElementById('error');
+      const page = document.getElementById('page1');
+      const meow = document.getElementById('meowSound');
+      const bgMusic = document.getElementById('bgMusic');
+
+      if (parseInt(input) === correctCode) {
+        error.style.display = 'none';
+        meow.play();
+        bgMusic.volume = 0.4;
+        bgMusic.play();
+        setTimeout(() => nextPage(2), 600);
+      } else {
+        error.style.display = 'block';
+        page.classList.add('shake');
+        setTimeout(() => page.classList.remove('shake'), 400);
+      }
+    }
+
+    function nextPage(num) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+
+      document.getElementById('page' + num).classList.add('active');
+      document.getElementById('dot' + num).classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
